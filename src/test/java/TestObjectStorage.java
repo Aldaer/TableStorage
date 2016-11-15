@@ -29,7 +29,17 @@ public class TestObjectStorage {
 
         int sizeAfter = recordDao.getAllRecords().size();
         assertThat(sizeAfter, is(sizeBefore + 1));
+    }
 
+    @Test
+    public void testSaveRecordAndGetId() {
+        Record rec = new Record("test1");
+
+        Record returnedRecord = recordDao.save(rec);
+
+        Record recordById = recordDao.getRecordById(returnedRecord.getId());
+
+        assertThat(rec.getName(), is(recordById.getName()));
 
     }
 

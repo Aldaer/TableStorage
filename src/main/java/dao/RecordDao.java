@@ -6,7 +6,7 @@ import java.util.Collection;
 
 public interface RecordDao {
 
-    void save(Record record);
+    Record save(Record record);
 
     Collection<Record> getAllRecords();
 

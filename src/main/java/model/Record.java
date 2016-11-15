@@ -16,7 +16,7 @@ public class Record implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private long id;
 
     @Column(name = "NAME")
     private String name;

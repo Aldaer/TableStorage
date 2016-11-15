@@ -11,7 +11,7 @@ import java.util.Collection;
 @Repository
 public class RecordDaoImpl extends AbstractJpaDao implements RecordDao {
     @Override
-    public void save(Record record) {
+    public Record save(Record record) {
         final EntityManager em = emf.createEntityManager();
 
         em.getTransaction().begin();
@@ -19,6 +19,8 @@ public class RecordDaoImpl extends AbstractJpaDao implements RecordDao {
         em.getTransaction().commit();
 
         em.close();
+
+        return record;
     }
 
     @Override
