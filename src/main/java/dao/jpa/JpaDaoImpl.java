@@ -1,22 +1,27 @@
 package dao.jpa;
 
 import dao.GenericDao;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 import javax.persistence.TypedQuery;
 import java.io.Serializable;
 import java.util.Collection;
 
-public class JpaDaoImpl<T extends Serializable> extends AbstractJpaDao implements GenericDao<T> {
+/**
+ * This class supports saving and retrieving objects via JPA.
+ *
+ * @param <T> Type of the object stored in the database. Class of returned objects (T.getClass())
+ *            must be passed as a constructor parameter.
+ */
+@RequiredArgsConstructor
+public class JpaDaoImpl<T extends Serializable> implements GenericDao<T> {
     private final Class<T> entityClass;
 
-    private JpaDaoImpl(Class<T> entityClass) {
-        this.entityClass = entityClass;
-    }
-
-    public static<T1 extends Serializable> JpaDaoImpl<T1> createInstance(T1 sampleEntity) {
-        return new JpaDaoImpl<>((Class<T1>) sampleEntity.getClass());
-    }
+    @PersistenceUnit
+    private EntityManagerFactory emf;       // Will be autowired
 
     @Override
     public T save(T entity) {

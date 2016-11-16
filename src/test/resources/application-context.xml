@@ -16,15 +16,11 @@
 
     <jdbc:embedded-database id="dataSource" type="H2"/>
 
-    <bean id="recordDao"
-          class="dao.jpa.JpaDaoImpl"
-          factory-method="createInstance">
-        <constructor-arg>
-            <bean class="model.SampleRecord"/>
-        </constructor-arg>
+    <bean id="recordDao" class="dao.jpa.JpaDaoImpl">
+        <constructor-arg name="entityClass" value="model.SampleRecord"/>
     </bean>
 
-    <bean id="lcemf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+    <bean class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
           p:dataSource-ref="dataSource"
           p:persistenceUnitName="RecordPersistence"
           p:persistenceProviderClass="org.hibernate.ejb.HibernatePersistence"/>
