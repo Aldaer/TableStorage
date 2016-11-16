@@ -1,6 +1,6 @@
 
 import dao.GenericDao;
-import model.Record;
+import model.SampleRecord;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +18,13 @@ import static org.junit.Assert.assertThat;
 public class TestObjectStorage {
 
     @Autowired
-    GenericDao<Record> recordDao;
+    GenericDao<SampleRecord> recordDao;
 
     @Test
     public void testSaveObjectToDatabase() {
-        Record rec = new Record("test");
+        SampleRecord rec = new SampleRecord("test");
 
-        Collection<Record> allRecords = recordDao.getAllRecords();
+        Collection<SampleRecord> allRecords = recordDao.getAllRecords();
         int sizeBefore = allRecords.size();
         recordDao.save(rec);
 
@@ -34,11 +34,11 @@ public class TestObjectStorage {
 
     @Test
     public void testSaveRecordAndGetId() {
-        Record rec = new Record("test1");
+        SampleRecord rec = new SampleRecord("test1");
 
-        Record returnedRecord = recordDao.save(rec);
+        SampleRecord returnedRecord = recordDao.save(rec);
 
-        Record recordById = recordDao.getRecordById(returnedRecord.getId());
+        SampleRecord recordById = recordDao.getRecordById(returnedRecord.getId());
 
         assertThat(rec.getName(), is(recordById.getName()));
 

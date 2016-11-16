@@ -10,16 +10,16 @@ public abstract class GenericJpaDaoImpl<T> extends AbstractJpaDao implements Gen
     protected abstract Class<T> workingClass();
 
     @Override
-    public T save(T record) {
+    public T save(T entity) {
         final EntityManager em = emf.createEntityManager();
 
         em.getTransaction().begin();
-        em.persist(record);
+        em.persist(entity);
         em.getTransaction().commit();
 
         em.close();
 
-        return record;
+        return entity;
     }
 
     @Override

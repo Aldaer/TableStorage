@@ -8,7 +8,7 @@
             Persistence unit for the Spring JPA tutorial with Hibernate using as JPA provider
         </description>
 
-        <class>model.Record</class>
+        <class>model.SampleRecord</class>
 
         <properties>
             <property name="hibernate.show_sql" value="true"/>

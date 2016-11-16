@@ -1,13 +1,13 @@
 package dao.jpa;
 
-import model.Record;
+import model.SampleRecord;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class RecordDaoImpl extends GenericJpaDaoImpl {
+public class RecordDaoImpl extends GenericJpaDaoImpl<SampleRecord> {
 
     @Override
     protected Class workingClass() {
-        return Record.class;
+        return SampleRecord.class;
     }
 }

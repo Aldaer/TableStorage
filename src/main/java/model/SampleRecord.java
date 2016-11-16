@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Record implements Serializable {
+public class SampleRecord implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,7 +21,7 @@ public class Record implements Serializable {
     @Column(name = "NAME")
     private String name;
 
-    public Record(String name) {
+    public SampleRecord(String name) {
         this.name = name;
     }
 
