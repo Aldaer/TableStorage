@@ -1,4 +1,5 @@
-import dao.RecordDao;
+
+import dao.GenericDao;
 import model.Record;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +18,7 @@ import static org.junit.Assert.assertThat;
 public class TestObjectStorage {
 
     @Autowired
-    RecordDao recordDao;
+    GenericDao<Record> recordDao;
 
     @Test
     public void testSaveObjectToDatabase() {

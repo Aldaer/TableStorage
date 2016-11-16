@@ -1,6 +1,5 @@
 package dao.jpa;
 
-import dao.RecordDao;
 import model.Record;
 import org.springframework.stereotype.Repository;
 
@@ -9,19 +8,7 @@ import javax.persistence.TypedQuery;
 import java.util.Collection;
 
 @Repository
-public class RecordDaoImpl extends AbstractJpaDao implements RecordDao {
-    @Override
-    public Record save(Record record) {
-        final EntityManager em = emf.createEntityManager();
-
-        em.getTransaction().begin();
-        em.persist(record);
-        em.getTransaction().commit();
-
-        em.close();
-
-        return record;
-    }
+public class RecordDaoImpl extends GenericJpaDaoImpl {
 
     @Override
     public Collection<Record> getAllRecords() {
