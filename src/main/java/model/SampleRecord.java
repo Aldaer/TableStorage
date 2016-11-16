@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
 
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "RECORDS")
 @Data

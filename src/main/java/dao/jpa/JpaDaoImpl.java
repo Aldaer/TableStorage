@@ -4,10 +4,19 @@ import dao.GenericDao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import java.io.Serializable;
 import java.util.Collection;
 
-public abstract class GenericJpaDaoImpl<T> extends AbstractJpaDao implements GenericDao<T> {
-    protected abstract Class<T> workingClass();
+public class JpaDaoImpl<T extends Serializable> extends AbstractJpaDao implements GenericDao<T> {
+    private final Class<T> entityClass;
+
+    private JpaDaoImpl(Class<T> entityClass) {
+        this.entityClass = entityClass;
+    }
+
+    public static<T1 extends Serializable> JpaDaoImpl<T1> createInstance(T1 sampleEntity) {
+        return new JpaDaoImpl<>((Class<T1>) sampleEntity.getClass());
+    }
 
     @Override
     public T save(T entity) {
@@ -26,7 +35,7 @@ public abstract class GenericJpaDaoImpl<T> extends AbstractJpaDao implements Gen
     public Collection<T> getAllRecords() {
         final EntityManager em = emf.createEntityManager();
 
-        final TypedQuery<T> query = em.createQuery("from " + workingClass().getName(), workingClass());
+        final TypedQuery<T> query = em.createQuery("from " + entityClass.getName(), entityClass);
 
         final Collection<T> resultList = query.getResultList();
         em.close();
@@ -37,7 +46,7 @@ public abstract class GenericJpaDaoImpl<T> extends AbstractJpaDao implements Gen
     public T getRecordById(long id) {
         final EntityManager em = emf.createEntityManager();
 
-        final TypedQuery<T> query = em.createQuery("select c from " + workingClass().getName() + " c where c.id = :id", workingClass());
+        final TypedQuery<T> query = em.createQuery("select c from " + entityClass.getName() + " c where c.id = :id", entityClass);
         query.setParameter("id", id);
 
         final T singleResult = query.getSingleResult();
