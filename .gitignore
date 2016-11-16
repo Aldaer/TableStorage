@@ -2,10 +2,10 @@
 ### Gradle template
 .gradle
 build/
-
 out/
 
 ### Java template
+classes/
 *.class
 
 # Package Files #
