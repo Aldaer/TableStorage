@@ -16,6 +16,7 @@ public class TestJsonGenerator {
 
     private final ByteArrayOutputStream out = new ByteArrayOutputStream(100);
     private final JsonGenerator gen = new JsonNullableGenerator(JF, out);
+    private final JsonPacker jPacker = new JsonPacker(gen);
 
     @Test
     public void testJsonGeneratorWithInt() throws Exception {
@@ -34,9 +35,42 @@ public class TestJsonGenerator {
         SampleRecord rec = new SampleRecord("some name");
         rec.setId(111);
 
-        rec.packIntoJson(gen);
+        jPacker.packIntoJson(rec);
+        jPacker.flushGenerator();
 
         final String expectedResult = "{\"id\":\"111\",\"NAME\":\"some name\"}";
         assertThat(out.toString(), is(expectedResult));
     }
+
+    @Test
+    public void testPackMultilevelObject() throws Exception {
+        SampleRecord rec = new SampleRecord("test");
+        rec.setId(5);
+
+        RecordContainer recC = new RecordContainer();
+        recC.id = 10;
+        recC.rec = rec;
+
+        jPacker.packIntoJson(recC);
+        jPacker.flushGenerator();
+
+        final String expectedResult = "{\"id\":\"10\",\"rec\":{\"id\":\"5\",\"NAME\":\"test\"}}";
+        assertThat(out.toString(), is(expectedResult));
+    }
+
+    @Test
+    public void testPackArray() throws Exception {
+        SampleRecord[] recArray = {new SampleRecord("one"), new SampleRecord("two")};
+
+        jPacker.packIntoJson(recArray);
+        jPacker.flushGenerator();
+
+        final String expectedResult = "[{\"id\":\"0\",\"NAME\":\"one\"},{\"id\":\"0\",\"NAME\":\"two\"}]";
+        assertThat(out.toString(), is(expectedResult));
+    }
+}
+
+class RecordContainer implements JsonPackable {
+    int id;
+    SampleRecord rec;
 }
