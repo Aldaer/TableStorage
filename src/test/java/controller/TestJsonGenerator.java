@@ -1,5 +1,6 @@
 package controller;
 
+import model.SampleRecord;
 import org.junit.Test;
 
 import javax.json.Json;
@@ -13,20 +14,29 @@ import static org.junit.Assert.assertThat;
 public class TestJsonGenerator {
     private static final JsonGeneratorFactory JF = Json.createGeneratorFactory(null);
 
+    private final ByteArrayOutputStream out = new ByteArrayOutputStream(100);
+    private final JsonGenerator gen = new JsonNullableGenerator(JF, out);
+
     @Test
     public void testJsonGeneratorWithInt() throws Exception {
-        final ByteArrayOutputStream out = new ByteArrayOutputStream(100);
-
-        final JsonGenerator gen = new JsonNullableGenerator(JF, out);
-
         gen.writeStartObject();
         gen.write("INT", 1);
         gen.writeEnd();
         gen.flush();
 
-        assertThat(out.toString(), is("{\"INT\":1}"));
+        final String expectedResult = "{\"INT\":1}";
+        assertThat(out.toString(), is(expectedResult));
 
     }
 
+    @Test
+    public void testPackSampleRecord() throws Exception {
+        SampleRecord rec = new SampleRecord("some name");
+        rec.setId(111);
 
+        rec.packIntoJson(gen);
+
+        final String expectedResult = "{\"id\":\"111\",\"NAME\":\"some name\"}";
+        assertThat(out.toString(), is(expectedResult));
+    }
 }

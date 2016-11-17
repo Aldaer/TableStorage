@@ -1,6 +1,6 @@
 package model;
 
-import lombok.AllArgsConstructor;
+import controller.JsonPackable;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,9 +11,8 @@ import java.io.Serializable;
 @Entity
 @Table(name = "RECORDS")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class SampleRecord implements Serializable {
+public class SampleRecord implements Serializable, JsonPackable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,6 +24,4 @@ public class SampleRecord implements Serializable {
     public SampleRecord(String name) {
         this.name = name;
     }
-
-
 }
