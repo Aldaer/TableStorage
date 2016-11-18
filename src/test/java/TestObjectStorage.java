@@ -1,13 +1,11 @@
-
 import dao.GenericDao;
 import model.SampleRecord;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.Collection;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -20,12 +18,18 @@ public class TestObjectStorage {
     @Autowired
     GenericDao<SampleRecord> recordDao;
 
+    private SampleRecord rec = new SampleRecord("test");
+
+    @Before
+    public void setUpRecord() throws Exception {
+        recordDao.save(rec);
+    }
+
     @Test
     public void testSaveObjectToDatabase() {
-        SampleRecord rec = new SampleRecord("test");
+        SampleRecord rec = new SampleRecord("test1");
 
-        Collection<SampleRecord> allRecords = recordDao.getAllRecords();
-        int sizeBefore = allRecords.size();
+        int sizeBefore = recordDao.getAllRecords().size();
         recordDao.save(rec);
 
         int sizeAfter = recordDao.getAllRecords().size();
@@ -34,20 +38,13 @@ public class TestObjectStorage {
 
     @Test
     public void testSaveRecordAndGetId() {
-        SampleRecord rec = new SampleRecord("test1");
-
-        recordDao.save(rec);
-
         SampleRecord recordById = recordDao.getRecordById(rec.getId());
 
-        assertThat(recordById.getName(), is("test1"));
+        assertThat(recordById.getName(), is("test"));
     }
 
     @Test
     public void testUpdateObjectInDatabase() {
-        SampleRecord rec = new SampleRecord("test2");
-
-        recordDao.save(rec);
         long storedId = rec.getId();
         rec.setName("updated");
 
