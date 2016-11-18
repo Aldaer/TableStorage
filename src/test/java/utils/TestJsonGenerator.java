@@ -1,4 +1,4 @@
-package controller;
+package utils;
 
 import model.SampleRecord;
 import org.junit.Test;

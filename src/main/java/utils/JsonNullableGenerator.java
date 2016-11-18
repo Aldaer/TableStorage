@@ -1,4 +1,4 @@
-package controller;
+package utils;
 
 import javax.json.JsonValue;
 import javax.json.stream.JsonGenerator;

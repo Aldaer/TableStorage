@@ -1,8 +1,8 @@
 package model;
 
-import controller.JsonPackable;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import utils.JsonPackable;
 
 import javax.persistence.*;
 import java.io.Serializable;
