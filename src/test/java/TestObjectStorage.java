@@ -27,10 +27,10 @@ public class TestObjectStorage {
 
     @Test
     public void testSaveObjectToDatabase() {
-        SampleRecord rec = new SampleRecord("test1");
+        SampleRecord rec1 = new SampleRecord("test1");
 
         int sizeBefore = recordDao.getAllRecords().size();
-        recordDao.save(rec);
+        recordDao.save(rec1);
 
         int sizeAfter = recordDao.getAllRecords().size();
         assertThat(sizeAfter, is(sizeBefore + 1));
