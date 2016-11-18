@@ -36,12 +36,26 @@ public class TestObjectStorage {
     public void testSaveRecordAndGetId() {
         SampleRecord rec = new SampleRecord("test1");
 
-        SampleRecord returnedRecord = recordDao.save(rec);
+        recordDao.save(rec);
 
-        SampleRecord recordById = recordDao.getRecordById(returnedRecord.getId());
+        SampleRecord recordById = recordDao.getRecordById(rec.getId());
 
-        assertThat(rec.getName(), is(recordById.getName()));
+        assertThat(recordById.getName(), is("test1"));
+    }
 
+    @Test
+    public void testUpdateObjectInDatabase() {
+        SampleRecord rec = new SampleRecord("test2");
+
+        recordDao.save(rec);
+        long storedId = rec.getId();
+        rec.setName("updated");
+
+        recordDao.update(rec);
+
+        SampleRecord updatedRecord = recordDao.getRecordById(storedId);
+
+        assertThat(updatedRecord.getName(), is("updated"));
     }
 
 

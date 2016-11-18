@@ -37,6 +37,17 @@ public class JpaDaoImpl<T extends Serializable> implements GenericDao<T> {
     }
 
     @Override
+    public void update(T entity) {
+        final EntityManager em = emf.createEntityManager();
+
+        em.getTransaction().begin();
+        em.merge(entity);
+        em.getTransaction().commit();
+
+        em.close();
+    }
+
+    @Override
     public Collection<T> getAllRecords() {
         final EntityManager em = emf.createEntityManager();
 
