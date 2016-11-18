@@ -59,7 +59,7 @@ class JsonPacker {
         }
     }
 
-    private static String getFieldName(Field field) {
+    static String getFieldName(Field field) {
         final Column annotation = field.getAnnotation(Column.class);
 
         return annotation == null? field.getName() : annotation.name();
