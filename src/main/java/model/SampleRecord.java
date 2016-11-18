@@ -1,5 +1,6 @@
 package model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import utils.JsonPackable;
@@ -11,6 +12,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "RECORDS")
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 public class SampleRecord implements Serializable, JsonPackable {
 

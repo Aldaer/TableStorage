@@ -12,7 +12,7 @@ import static org.junit.Assert.assertThat;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:application-context.xml")
+@ContextConfiguration("classpath:test-context.xml")
 public class TestObjectStorage {
 
     @Autowired

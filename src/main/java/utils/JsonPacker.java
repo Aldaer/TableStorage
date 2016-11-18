@@ -36,7 +36,6 @@ class JsonPacker {
         generator.flush();
     }
 
-
     private void packObjectBody(Object obj) {
         final Field[] declaredFields = obj.getClass().getDeclaredFields();
         for (Field field : declaredFields) {

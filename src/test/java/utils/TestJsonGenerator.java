@@ -32,8 +32,7 @@ public class TestJsonGenerator {
 
     @Test
     public void testPackSampleRecord() throws Exception {
-        SampleRecord rec = new SampleRecord("some name");
-        rec.setId(111);
+        SampleRecord rec = new SampleRecord(111, "some name");
 
         jPacker.packIntoJson(rec);
         jPacker.flushGenerator();
@@ -44,8 +43,7 @@ public class TestJsonGenerator {
 
     @Test
     public void testPackMultilevelObject() throws Exception {
-        SampleRecord rec = new SampleRecord("test");
-        rec.setId(5);
+        SampleRecord rec = new SampleRecord(5, "test");
 
         RecordContainer recC = new RecordContainer();
         recC.id = 10;
@@ -60,17 +58,13 @@ public class TestJsonGenerator {
 
     @Test
     public void testPackArray() throws Exception {
-        SampleRecord[] recArray = {new SampleRecord("one"), new SampleRecord("two")};
+        SampleRecord[] recArray = {new SampleRecord(1, "one"), new SampleRecord(2, "two")};
 
         jPacker.packIntoJson(recArray);
         jPacker.flushGenerator();
 
-        final String expectedResult = "[{\"id\":\"0\",\"NAME\":\"one\"},{\"id\":\"0\",\"NAME\":\"two\"}]";
+        final String expectedResult = "[{\"id\":\"1\",\"NAME\":\"one\"},{\"id\":\"2\",\"NAME\":\"two\"}]";
         assertThat(out.toString(), is(expectedResult));
     }
 }
 
-class RecordContainer implements JsonPackable {
-    int id;
-    SampleRecord rec;
-}
