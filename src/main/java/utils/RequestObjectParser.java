@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.function.Function;
 
 @RequiredArgsConstructor
-class RequestObjectParser {
+public class RequestObjectParser {
     private final HttpServletRequest req;
 
     /**

@@ -1,11 +1,13 @@
-import dao.GenericDao;
+import dao.JpaDao;
 import model.SampleRecord;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import utils.RequestObjectParser;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -16,7 +18,7 @@ import static org.junit.Assert.assertThat;
 public class TestObjectStorage {
 
     @Autowired
-    GenericDao<SampleRecord> recordDao;
+    JpaDao<SampleRecord> recordDao;
 
     private SampleRecord rec = new SampleRecord("test");
 
@@ -55,5 +57,23 @@ public class TestObjectStorage {
         assertThat(updatedRecord.getName(), is("updated"));
     }
 
+    @Test
+    public void testUpdateObjectInDatabaseByReconstruction() {
+        final MockHttpServletRequest req = new MockHttpServletRequest();
+        final RequestObjectParser parser = new RequestObjectParser(req);
+
+        Long storedId = rec.getId();
+
+        req.setParameter("id", storedId.toString());
+        req.setParameter("NAME", "reconstructed");
+
+        parser.reconstructFromPrototype(SampleRecord.class, id -> recordDao.getRecordById((Long) id));
+
+        recordDao.update(rec);
+
+        SampleRecord updatedRecord = recordDao.getRecordById(storedId);
+
+        assertThat(updatedRecord.getName(), is("updated"));
+    }
 
 }

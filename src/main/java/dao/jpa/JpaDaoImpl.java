@@ -1,6 +1,6 @@
 package dao.jpa;
 
-import dao.GenericDao;
+import dao.JpaDao;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
@@ -14,7 +14,7 @@ import java.util.Collection;
  *            must be passed as a constructor parameter.
  */
 @RequiredArgsConstructor
-public class JpaDaoImpl<T extends Serializable> implements GenericDao<T> {
+public class JpaDaoImpl<T extends Serializable> implements JpaDao<T> {
     private final Class<T> entityClass;
 
     @PersistenceUnit
@@ -69,5 +69,16 @@ public class JpaDaoImpl<T extends Serializable> implements GenericDao<T> {
         } finally {
             em.close();
         }
+    }
+
+    @Override
+    public T getDetachedReference(Object primaryKey) {
+        final EntityManager em = emf.createEntityManager();
+
+        final T ref = em.find(entityClass, primaryKey);
+
+        em.close();
+
+        return ref;
     }
 }

@@ -1,6 +1,6 @@
 package controller;
 
-import dao.GenericDao;
+import dao.JpaDao;
 import model.SampleRecord;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +25,7 @@ public class TableServletTest {
     private TableServlet testServlet;
 
     @Autowired
-    private GenericDao<SampleRecord> recordDao;
+    private JpaDao<SampleRecord> recordDao;
 
     private SampleRecord rec = new SampleRecord("testservlet");
     private MockHttpServletRequest req;

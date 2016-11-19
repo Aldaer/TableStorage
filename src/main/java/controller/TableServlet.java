@@ -1,7 +1,7 @@
 package controller;
 
 
-import dao.GenericDao;
+import dao.JpaDao;
 import model.SampleRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import utils.JsonNullableGenerator;
@@ -19,7 +19,7 @@ import java.util.Collection;
 @WebServlet(name = "TableServlet", urlPatterns = {"/data"})
 public class TableServlet extends HttpServlet {
     @Autowired
-    private GenericDao<SampleRecord> recordDao;
+    private JpaDao<SampleRecord> recordDao;
 
     @Autowired
     private JsonGeneratorFactory JF;
