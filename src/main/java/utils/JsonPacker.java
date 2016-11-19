@@ -64,5 +64,6 @@ class JsonPacker {
 
         return annotation == null? field.getName() : annotation.name();
     }
+
 }
 

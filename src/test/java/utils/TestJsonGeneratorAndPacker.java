@@ -11,10 +11,10 @@ import java.io.ByteArrayOutputStream;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class TestJsonGenerator {
+public class TestJsonGeneratorAndPacker {
     private static final JsonGeneratorFactory JF = Json.createGeneratorFactory(null);
 
-    private final ByteArrayOutputStream out = new ByteArrayOutputStream(100);
+    private final ByteArrayOutputStream out = new ByteArrayOutputStream();
     private final JsonGenerator gen = new JsonNullableGenerator(JF, out);
     private final JsonPacker jPacker = new JsonPacker(gen);
 
@@ -27,7 +27,6 @@ public class TestJsonGenerator {
 
         final String expectedResult = "{\"INT\":1}";
         assertThat(out.toString(), is(expectedResult));
-
     }
 
     @Test

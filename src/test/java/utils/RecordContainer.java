@@ -1,6 +1,6 @@
 package utils;
 
-import model.SampleRecord;
+        import model.SampleRecord;
 
 /**
  * Class used for tests only
