@@ -67,13 +67,14 @@ public class TestObjectStorage {
         req.setParameter("id", storedId.toString());
         req.setParameter("NAME", "reconstructed");
 
-        parser.reconstructFromPrototype(SampleRecord.class, id -> recordDao.getRecordById((Long) id));
+        final SampleRecord newRecord = parser.reconstructFromPrototype(SampleRecord.class, recordDao::getDetachedReference);
 
-        recordDao.update(rec);
+        assertThat(newRecord.getName(), is("reconstructed"));
 
-        SampleRecord updatedRecord = recordDao.getRecordById(storedId);
+        recordDao.update(newRecord);
 
-        assertThat(updatedRecord.getName(), is("updated"));
+        final SampleRecord recordInDb = recordDao.getRecordById(storedId);
+        assertThat(recordInDb.getName(), is("reconstructed"));
     }
 
 }
