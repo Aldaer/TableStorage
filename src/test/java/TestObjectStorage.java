@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import utils.RequestObjectParser;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -55,6 +55,19 @@ public class TestObjectStorage {
         SampleRecord updatedRecord = recordDao.getRecordById(storedId);
 
         assertThat(updatedRecord.getName(), is("updated"));
+    }
+
+    @Test
+    public void testRemoveObject() {
+        SampleRecord rec = new SampleRecord("doomed");
+        recordDao.save(rec);
+        long storedId = rec.getId();
+
+        assertNotNull(recordDao.getRecordById(storedId));
+
+        recordDao.removeRecord(storedId);
+
+        assertNull(recordDao.getRecordById(storedId));
     }
 
     @Test

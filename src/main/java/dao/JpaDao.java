@@ -12,4 +12,6 @@ public interface JpaDao<T> {
     T getRecordById(long id);
 
     T getDetachedReference(Object primaryKey);
+
+    void removeRecord(Object primaryKey);
 }

@@ -51,6 +51,7 @@ public class JpaDaoImpl<T extends Serializable> implements JpaDao<T> {
         final TypedQuery<T> query = em.createQuery("from " + entityClass.getName(), entityClass);
 
         final Collection<T> resultList = query.getResultList();
+
         em.close();
         return resultList;
     }
@@ -80,5 +81,16 @@ public class JpaDaoImpl<T extends Serializable> implements JpaDao<T> {
         em.close();
 
         return ref;
+    }
+
+    public void removeRecord(Object primaryKey) {
+        final EntityManager em = emf.createEntityManager();
+
+        em.getTransaction().begin();
+        final T ref = em.find(entityClass, primaryKey);
+        if (ref != null) em.remove(ref);
+        em.getTransaction().commit();
+
+        em.close();
     }
 }
