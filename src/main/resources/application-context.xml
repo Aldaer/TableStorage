@@ -8,7 +8,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
-    <!-- Activates @Autowired -->
     <context:annotation-config/>
 
     <bean id="recordDao" class="dao.jpa.JpaDaoImpl">
@@ -16,8 +15,8 @@
     </bean>
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://localhost:3306/tablestore"/>
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/tablestore?useSSL=false"/>
         <property name="username" value="root"/>
         <property name="password" value="1234"/>
     </bean>
@@ -25,5 +24,9 @@
     <bean class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
           p:dataSource-ref="dataSource"
           p:persistenceUnitName="RecordPersistence"
-          p:persistenceProviderClass="org.hibernate.ejb.HibernatePersistence"/>
+          p:persistenceProviderClass="org.hibernate.jpa.HibernatePersistenceProvider"/>
+
+    <bean id="jf" class="javax.json.Json" factory-method="createGeneratorFactory">
+        <constructor-arg><null/></constructor-arg>
+    </bean>
 </beans>
