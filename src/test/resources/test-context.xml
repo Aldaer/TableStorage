@@ -12,16 +12,20 @@
     <!-- Activates @Autowired -->
     <context:annotation-config/>
 
-    <context:component-scan base-package="model, dao"/>
-
-    <jdbc:embedded-database id="dataSource" type="H2"/>
-
     <bean id="recordDao" class="dao.jpa.JpaDaoImpl">
         <constructor-arg name="entityClass" value="model.SampleRecord"/>
     </bean>
+
+    <jdbc:embedded-database id="dataSource" type="H2"/>
 
     <bean class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
           p:dataSource-ref="dataSource"
           p:persistenceUnitName="RecordPersistence"
           p:persistenceProviderClass="org.hibernate.ejb.HibernatePersistence"/>
+
+    <bean id="testServlet" class="controller.TableServlet"/>
+
+    <bean id="jf" class="javax.json.Json" factory-method="createGeneratorFactory">
+        <constructor-arg><null/></constructor-arg>
+    </bean>
 </beans>

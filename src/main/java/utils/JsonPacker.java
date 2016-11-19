@@ -14,13 +14,12 @@ import java.util.Arrays;
  * Object fields that do not implement JsonPackable interface are written as strings via toString().
  * Arrays fields are not supported.
  * Does not flush the generator.
- *
  */
 @RequiredArgsConstructor
-class JsonPacker {
+public class JsonPacker {
     private final JsonGenerator generator;
 
-    public void packIntoJson(JsonPackable object) {
+    void packIntoJson(JsonPackable object) {
         generator.writeStartObject();
         packObjectBody(object);
         generator.writeEnd();
@@ -44,7 +43,7 @@ class JsonPacker {
 
             Object fieldValue;
             try {
-                 fieldValue = field.get(obj);
+                fieldValue = field.get(obj);
             } catch (IllegalAccessException e) {
                 throw new RuntimeException("Cannot get field value", e);
             }
@@ -62,7 +61,7 @@ class JsonPacker {
     static String getFieldName(Field field) {
         final Column annotation = field.getAnnotation(Column.class);
 
-        return annotation == null? field.getName() : annotation.name();
+        return annotation == null ? field.getName() : annotation.name();
     }
 
 }

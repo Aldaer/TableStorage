@@ -12,7 +12,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class TestJsonGeneratorAndPacker {
-    private static final JsonGeneratorFactory JF = Json.createGeneratorFactory(null);
+    private static JsonGeneratorFactory JF = Json.createGeneratorFactory(null);
 
     private final ByteArrayOutputStream out = new ByteArrayOutputStream();
     private final JsonGenerator gen = new JsonNullableGenerator(JF, out);
