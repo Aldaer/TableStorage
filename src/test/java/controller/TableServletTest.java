@@ -26,7 +26,7 @@ public class TableServletTest {
     @Autowired
     private JpaDao<SampleRecord> recordDao;
 
-    private SampleRecord rec = new SampleRecord("testservlet");
+    private SampleRecord record = new SampleRecord("testservlet");
     private MockHttpServletRequest req;
     private MockHttpServletResponse res;
 
@@ -35,12 +35,12 @@ public class TableServletTest {
         req = new MockHttpServletRequest();
         res = new MockHttpServletResponse();
 
-        recordDao.save(rec);
+        recordDao.save(record);
     }
 
     @Test
     public void testDoGetReturnsCorrectJson() throws Exception {
-        String recAsJson = "{\"id\":\"" + rec.getId() + "\",\"NAME\":\"" + rec.getName() + "\"}";
+        String recAsJson = "{\"id\":\"" + record.getId() + "\",\"NAME\":\"" + record.getName() + "\"}";
 
         testServlet.doGet(req, res);
         assertTrue(res.getContentAsString().contains(recAsJson));
@@ -55,17 +55,26 @@ public class TableServletTest {
 
     @Test
     public void testDoPutUpdatesExistingObjects() throws Exception {
-        final SampleRecord oldRec = recordDao.getRecordById(rec.getId());
+        final SampleRecord oldRec = recordDao.getRecordById(record.getId());
 
-        req.setParameter("id", String.valueOf(rec.getId()));
+        req.setParameter("id", String.valueOf(record.getId()));
         req.setParameter("NAME", "new value");
 
         testServlet.doPut(req, res);
 
-        final SampleRecord newRec = recordDao.getRecordById(rec.getId());
+        final SampleRecord newRec = recordDao.getRecordById(record.getId());
         assertThat(res.getStatus(), is(HttpServletResponse.SC_OK));
 
         assertThat(oldRec.getName(), is("testservlet"));
         assertThat(newRec.getName(), is("new value"));
+    }
+
+    @Test
+    public void testDoPutFailsOnNonExistingObjects() throws Exception {
+        req.setParameter("id", "-1");
+        req.setParameter("NAME", "some value");
+
+        testServlet.doPut(req, res);
+        assertThat(res.getStatus(), is(HttpServletResponse.SC_BAD_REQUEST));
     }
 }
