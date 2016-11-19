@@ -11,11 +11,11 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -28,7 +28,7 @@ public class TableServletTest {
     private GenericDao<SampleRecord> recordDao;
 
     private SampleRecord rec = new SampleRecord("testservlet");
-    private HttpServletRequest req;
+    private MockHttpServletRequest req;
     private MockHttpServletResponse res;
 
     @Before
@@ -51,7 +51,20 @@ public class TableServletTest {
         recordDao.save(rec);
 
         testServlet.doGet(req, res);
-        assertTrue(res.getContentType().contains("application/json"));
         assertThat(res.getStatus(), is(HttpServletResponse.SC_OK));
+        assertTrue(res.getContentType().contains("application/json"));
+    }
+
+    @Test
+    public void testDoPutAddsObjectToDatabase() throws Exception {
+        req.setParameter("id", "99");
+        req.setParameter("NAME", "ninetynine");
+
+        assertNull(recordDao.getRecordById(99));
+        testServlet.doPut(req, res);
+
+        final SampleRecord rec99 = recordDao.getRecordById(99);
+        assertThat(res.getStatus(), is(HttpServletResponse.SC_OK));
+        assertThat(rec99.getName(), is("ninetynine"));
     }
 }

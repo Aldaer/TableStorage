@@ -3,10 +3,7 @@ package dao.jpa;
 import dao.GenericDao;
 import lombok.RequiredArgsConstructor;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
 
@@ -65,8 +62,12 @@ public class JpaDaoImpl<T extends Serializable> implements GenericDao<T> {
         final TypedQuery<T> query = em.createQuery("select c from " + entityClass.getName() + " c where c.id = :id", entityClass);
         query.setParameter("id", id);
 
-        final T singleResult = query.getSingleResult();
-        em.close();
-        return singleResult;
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
     }
 }
