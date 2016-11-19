@@ -15,7 +15,7 @@ public class RequestObjectParser {
      * Reconstructs object from request into supplied blank, returning reference to it.
      * Do not use with Spring managed objects. Use detached objects instead.
      */
-    <T> T reconstruct(T blank) {
+    public <T> T reconstruct(T blank) {
         for (Field field : blank.getClass().getDeclaredFields())
             reconstructField(blank, field);
 

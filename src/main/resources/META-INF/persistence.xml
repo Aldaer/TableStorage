@@ -5,13 +5,13 @@
 
     <persistence-unit name="RecordPersistence">
         <description>
-            Persistence unit for the Spring JPA test with Hibernate as a JPA provider
+            Persistence unit for the Spring JPA main with Hibernate as a JPA provider
         </description>
 
         <class>model.SampleRecord</class>
 
         <properties>
-            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.show_sql" value="false"/>
             <property name="hibernate.hbm2ddl.auto" value="create"/>
         </properties>
 

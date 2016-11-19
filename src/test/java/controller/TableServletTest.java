@@ -28,15 +28,19 @@ public class TableServletTest {
     private JpaDao<SampleRecord> recordDao;
 
     private SampleRecord record = new SampleRecord("testservlet");
-    private MockHttpServletRequest req;
-    private MockHttpServletResponse res;
+    private MockHttpServletRequest req = new MockHttpServletRequest();
+    private MockHttpServletResponse res = new MockHttpServletResponse();
 
     @Before
     public void createHttpMocks() throws Exception {
-        req = new MockHttpServletRequest();
-        res = new MockHttpServletResponse();
-
         recordDao.save(record);
+    }
+
+    @Test
+    public void testDoGetContentTypeAndStatus() throws Exception {
+        testServlet.doGet(req, res);
+        assertThat(res.getStatus(), is(HttpServletResponse.SC_OK));
+        assertTrue(res.getContentType().contains("application/json"));
     }
 
     @Test
@@ -45,13 +49,6 @@ public class TableServletTest {
 
         testServlet.doGet(req, res);
         assertTrue(res.getContentAsString().contains(recAsJson));
-    }
-
-    @Test
-    public void testDoGetContentTypeAndStatus() throws Exception {
-        testServlet.doGet(req, res);
-        assertThat(res.getStatus(), is(HttpServletResponse.SC_OK));
-        assertTrue(res.getContentType().contains("application/json"));
     }
 
     @Test
@@ -80,12 +77,24 @@ public class TableServletTest {
     }
 
     @Test
-    public void testDeleteDeletesObjectFromDb() throws Exception {
+    public void testDoDeleteDeletesObjectFromDb() throws Exception {
         long recordId = recordDao.save(new SampleRecord("TBD")).getId();
         req.setParameter("id", String.valueOf(recordId));
         testServlet.doDelete(req, res);
 
         assertNull(recordDao.getRecordById(recordId));
+    }
+
+    @Test
+    public void testDoPostCreatesAndReturnsANewRecord() throws Exception {
+        req.setParameter("NAME", "one more");
+
+        final int beforePost = recordDao.getAllRecords().size();
+        testServlet.doPost(req, res);
+        final int afterPost = recordDao.getAllRecords().size();
+
+        assertThat(afterPost, is(beforePost + 1));
+        assertTrue(res.getContentAsString().contains("\"NAME\":\"one more\""));
     }
 
 }

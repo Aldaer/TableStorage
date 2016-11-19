@@ -14,7 +14,6 @@ repositories {
 dependencies {
     testCompile 'junit:junit:+'
     testCompile 'org.springframework:spring-test:+'
-    testCompile 'org.springframework:spring-web:+'
     testCompile 'com.h2database:h2:+'
 
     compileOnly 'org.projectlombok:lombok:+'
@@ -23,6 +22,7 @@ dependencies {
     compile 'org.springframework:spring-context:+'
     compile 'org.springframework:spring-jdbc:+'
     compile 'org.springframework:spring-orm:+'
+    compile 'org.springframework:spring-web:+'
 
     compile 'org.hibernate:hibernate-core:4.0.+'
     compile 'org.hibernate:hibernate-entitymanager:4.0.+'

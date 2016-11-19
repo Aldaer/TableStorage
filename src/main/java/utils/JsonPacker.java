@@ -19,7 +19,7 @@ import java.util.Arrays;
 public class JsonPacker {
     private final JsonGenerator generator;
 
-    void packIntoJson(JsonPackable object) {
+    public void packIntoJson(JsonPackable object) {
         generator.writeStartObject();
         packObjectBody(object);
         generator.writeEnd();

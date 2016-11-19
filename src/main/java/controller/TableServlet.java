@@ -27,8 +27,7 @@ public class TableServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("application/json");
-        resp.setCharacterEncoding("UTF-8");
+        setResponseParametersToJson(resp);
 
         final Collection<SampleRecord> allRecords = recordDao.getAllRecords();
         JsonPacker packer = new JsonPacker(new JsonNullableGenerator(JF, resp.getOutputStream()));
@@ -58,4 +57,22 @@ public class TableServlet extends HttpServlet {
 
         recordDao.removeRecord(deletionKey);
     }
-}
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        final RequestObjectParser parser = new RequestObjectParser(req);
+
+        final SampleRecord newRecord = parser.reconstruct(new SampleRecord());    // Primary key ignored, will be auto-generated
+
+        recordDao.save(newRecord);
+
+        JsonPacker packer = new JsonPacker(new JsonNullableGenerator(JF, resp.getOutputStream()));
+        packer.packIntoJson(newRecord);
+        packer.flushGenerator();
+    }
+
+
+    private void setResponseParametersToJson(HttpServletResponse resp) {
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+    }}
