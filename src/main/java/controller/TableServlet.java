@@ -52,6 +52,10 @@ public class TableServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doDelete(req, resp);
+        final RequestObjectParser parser = new RequestObjectParser(req);
+
+        final Object deletionKey = parser.getPrimaryKeyValue(SampleRecord.class);
+
+        recordDao.removeRecord(deletionKey);
     }
 }

@@ -37,26 +37,28 @@ public class RequestObjectParser {
      * then fills its fields from request. Primary key is the field annotated with @javax.persistence.Id.
      */
     public <T extends JsonPackable> T reconstructFromPrototype(Class<T> entityClass, Function<Object, T> getPrototypeByKey) {
-        final Field[] declaredFields = entityClass.getDeclaredFields();
+        final Object pKeyValue = getPrimaryKeyValue(entityClass);
 
-        final Field pKeyField = Arrays.stream(declaredFields)
+        final T prototype = getPrototypeByKey.apply(pKeyValue);
+
+        if (prototype != null) {
+            Arrays.stream(entityClass.getDeclaredFields())
+                    .filter(RequestObjectParser::isFillableField)
+                    .forEach(field -> reconstructField(prototype, field));
+        }
+
+        return prototype;
+    }
+
+    public <T extends JsonPackable> Object getPrimaryKeyValue(Class<T> entityClass) {
+        final Field pKeyField = Arrays.stream(entityClass.getDeclaredFields())
                 .filter(RequestObjectParser::isPrimaryKeyField)
                 .findAny()
                 .orElseThrow(IllegalArgumentException::new);
 
         final String pKeyName = JsonPacker.getFieldName(pKeyField);
 
-        final Object pKeyValue = convertValueIntoObject(req.getParameter(pKeyName), pKeyField.getType());
-
-        final T prototype = getPrototypeByKey.apply(pKeyValue);
-
-        if (prototype != null) {
-            Arrays.stream(declaredFields)
-                    .filter(RequestObjectParser::isFillableField)
-                    .forEach(field -> reconstructField(prototype, field));
-        }
-
-        return prototype;
+        return convertValueIntoObject(req.getParameter(pKeyName), pKeyField.getType());
     }
 
     private static boolean isPrimaryKeyField(Field f) {

@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -77,4 +78,14 @@ public class TableServletTest {
         testServlet.doPut(req, res);
         assertThat(res.getStatus(), is(HttpServletResponse.SC_BAD_REQUEST));
     }
+
+    @Test
+    public void testDeleteDeletesObjectFromDb() throws Exception {
+        long recordId = recordDao.save(new SampleRecord("TBD")).getId();
+        req.setParameter("id", String.valueOf(recordId));
+        testServlet.doDelete(req, res);
+
+        assertNull(recordDao.getRecordById(recordId));
+    }
+
 }
