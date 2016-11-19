@@ -6,6 +6,7 @@ import model.SampleRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import utils.JsonNullableGenerator;
 import utils.JsonPacker;
+import utils.RequestObjectParser;
 
 import javax.json.stream.JsonGeneratorFactory;
 import javax.servlet.ServletException;
@@ -37,7 +38,16 @@ public class TableServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPut(req, resp);
+        final RequestObjectParser parser = new RequestObjectParser(req);
+
+        SampleRecord updatedRecord = parser.reconstructFromPrototype(SampleRecord.class, recordDao::getDetachedReference);
+
+        if (updatedRecord == null) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Cannot update: record not exists");
+            return;
+        }
+
+        recordDao.update(updatedRecord);
     }
 
     @Override

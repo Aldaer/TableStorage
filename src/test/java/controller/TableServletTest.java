@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -35,11 +34,12 @@ public class TableServletTest {
     public void createHttpMocks() throws Exception {
         req = new MockHttpServletRequest();
         res = new MockHttpServletResponse();
+
+        recordDao.save(rec);
     }
 
     @Test
     public void testDoGetReturnsCorrectJson() throws Exception {
-        recordDao.save(rec);
         String recAsJson = "{\"id\":\"" + rec.getId() + "\",\"NAME\":\"" + rec.getName() + "\"}";
 
         testServlet.doGet(req, res);
@@ -48,23 +48,24 @@ public class TableServletTest {
 
     @Test
     public void testDoGetContentTypeAndStatus() throws Exception {
-        recordDao.save(rec);
-
         testServlet.doGet(req, res);
         assertThat(res.getStatus(), is(HttpServletResponse.SC_OK));
         assertTrue(res.getContentType().contains("application/json"));
     }
 
     @Test
-    public void testDoPutAddsObjectToDatabase() throws Exception {
-        req.setParameter("id", "99");
-        req.setParameter("NAME", "ninetynine");
+    public void testDoPutUpdatesExistingObjects() throws Exception {
+        final SampleRecord oldRec = recordDao.getRecordById(rec.getId());
 
-        assertNull(recordDao.getRecordById(99));
+        req.setParameter("id", String.valueOf(rec.getId()));
+        req.setParameter("NAME", "new value");
+
         testServlet.doPut(req, res);
 
-        final SampleRecord rec99 = recordDao.getRecordById(99);
+        final SampleRecord newRec = recordDao.getRecordById(rec.getId());
         assertThat(res.getStatus(), is(HttpServletResponse.SC_OK));
-        assertThat(rec99.getName(), is("ninetynine"));
+
+        assertThat(oldRec.getName(), is("testservlet"));
+        assertThat(newRec.getName(), is("new value"));
     }
 }

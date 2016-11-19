@@ -13,7 +13,7 @@ public class RequestObjectParser {
 
     /**
      * Reconstructs object from request into supplied blank, returning reference to it.
-     * Do not use with Spring managed objects.
+     * Do not use with Spring managed objects. Use detached objects instead.
      */
     <T> T reconstruct(T blank) {
         for (Field field : blank.getClass().getDeclaredFields())
@@ -34,7 +34,7 @@ public class RequestObjectParser {
 
     /**
      * Creates managed entity by finding/creating it in the database using primary key,
-     * then fills its fields from request.
+     * then fills its fields from request. Primary key is the field annotated with @javax.persistence.Id.
      */
     public <T extends JsonPackable> T reconstructFromPrototype(Class<T> entityClass, Function<Object, T> getPrototypeByKey) {
         final Field[] declaredFields = entityClass.getDeclaredFields();
@@ -50,9 +50,11 @@ public class RequestObjectParser {
 
         final T prototype = getPrototypeByKey.apply(pKeyValue);
 
-        Arrays.stream(declaredFields)
-                .filter(RequestObjectParser::isFillableField)
-                .forEach(field -> reconstructField(prototype, field));
+        if (prototype != null) {
+            Arrays.stream(declaredFields)
+                    .filter(RequestObjectParser::isFillableField)
+                    .forEach(field -> reconstructField(prototype, field));
+        }
 
         return prototype;
     }
@@ -62,10 +64,10 @@ public class RequestObjectParser {
     }
 
     private static boolean isFillableField(Field f) {
-        return ! isPrimaryKeyField(f);
+        return !isPrimaryKeyField(f);
     }
 
-    private static Object convertValueIntoObject(String fieldValue, Class<?> fieldType) {
+    private static Object convertValueIntoObject(String fieldValue, Class<?> fieldType) { // TODO: add parsing methods as required
         if (fieldType.isAssignableFrom(String.class))
             return fieldValue;
 
