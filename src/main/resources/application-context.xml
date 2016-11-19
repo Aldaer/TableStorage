@@ -15,8 +15,12 @@
         <constructor-arg name="entityClass" value="model.SampleRecord"/>
     </bean>
 
-    <!-- TODO: use production-class DB -->
-    <jdbc:embedded-database id="dataSource" type="H2"/>
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/tablestore"/>
+        <property name="username" value="root"/>
+        <property name="password" value="1234"/>
+    </bean>
 
     <bean class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
           p:dataSource-ref="dataSource"
