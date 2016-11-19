@@ -22,4 +22,19 @@ public class TestObjectParser {
         SampleRecord expected = new SampleRecord(12, "test");
         assertThat(rec, is(expected));
     }
+
+    @Test
+    public void testReconstructFromPrototype() throws Exception {
+        req.setParameter("id", "12");
+        SampleRecord returnedRecord = parser.reconstructFromPrototype(SampleRecord.class, this::mockDb);
+        assertThat(returnedRecord.getName(), is("twelve"));
+
+        req.setParameter("id", "11");
+        returnedRecord = parser.reconstructFromPrototype(SampleRecord.class, this::mockDb);
+        assertThat(returnedRecord.getName(), is("default"));
+    }
+
+    private SampleRecord mockDb(Object key) {
+        return (Long) key == 12 ? new SampleRecord("twelve") : new SampleRecord("default");
+    }
 }
