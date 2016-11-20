@@ -3,12 +3,33 @@
 <head>
     <meta charset="utf-8"/>
     <title>Table storage</title>
-    <!--<link rel="stylesheet" type="text/css" href="/css/tablestyle.css">-->
+    <link rel="stylesheet" type="text/css" href="/css/tablestyle.css">
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
+    <script src='https://www.appelsiini.net/download/jquery.jeditable.mini.js'></script>
 </head>
 <body>
 <div class="mainpanel">
     <h1>Here is the table you requested!</h1>
+    <table id="dataTable">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+        </tr>
+        <tr class="data">
+            <td>1</td>
+            <td>Lorem ipsum</td>
+        </tr>
+        <tr class="data">
+            <td>2</td>
+            <td>dolor si amet</td>
+        </tr>
+        <tr class="data">
+            <td>3</td>
+            <td>consectetur adipiscing elit</td>
+        </tr>
+    </table>
     <a href="/data">raw data...</a>
 </div>
+<script src="script/tableedit.js"></script>
 </body>
 </html>

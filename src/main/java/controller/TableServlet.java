@@ -32,6 +32,7 @@ public class TableServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("Performing GET");
         setResponseParametersToJson(resp);
 
         final Collection<SampleRecord> allRecords = recordDao.getAllRecords();
@@ -42,6 +43,7 @@ public class TableServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("Performing PUT");
         final RequestObjectParser parser = new RequestObjectParser(req);
 
         SampleRecord updatedRecord = parser.reconstructFromPrototype(SampleRecord.class, recordDao::getDetachedReference);
@@ -56,6 +58,7 @@ public class TableServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("Performing DELETE");
         final RequestObjectParser parser = new RequestObjectParser(req);
 
         final Object deletionKey = parser.getPrimaryKeyValue(SampleRecord.class);
@@ -65,6 +68,8 @@ public class TableServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("Performing POST");
+
         final RequestObjectParser parser = new RequestObjectParser(req);
 
         final SampleRecord newRecord = parser.reconstruct(new SampleRecord());    // Primary key ignored, will be auto-generated
