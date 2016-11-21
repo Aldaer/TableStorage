@@ -55,8 +55,8 @@ public class TableServletTest {
     public void testDoPutUpdatesExistingObjects() throws Exception {
         final SampleRecord oldRec = recordDao.getRecordById(record.getId());
 
-        req.setParameter("id", String.valueOf(record.getId()));
-        req.setParameter("NAME", "new value");
+        final String contentString = "id=" + String.valueOf(record.getId()) + ",NAME=new value";
+        req.setContent(contentString.getBytes());
 
         testServlet.doPut(req, res);
 
@@ -69,8 +69,8 @@ public class TableServletTest {
 
     @Test
     public void testDoPutFailsOnNonExistingObjects() throws Exception {
-        req.setParameter("id", "-1");
-        req.setParameter("NAME", "some value");
+        final String contentString = "id=-1,NAME=some value";
+        req.setContent(contentString.getBytes());
 
         testServlet.doPut(req, res);
         assertThat(res.getStatus(), is(HttpServletResponse.SC_BAD_REQUEST));
