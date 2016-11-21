@@ -17,7 +17,7 @@ function onLoadDataFromServer(data) {
     $.each(data, function (i, row) {
         dataRowObject = $('<tr class="data"></tr>');
         DATA_FIELDS.forEach(function (field) {
-            dataCellObject = $('<td>' + row[field.name] + '</td>');
+            dataCellObject = $('<td>' + _.escape(row[field.name]) + '</td>');
             if (field.editable) {
                 dataCellObject.addClass("editable");
                 dataCellObject.data("id", row["id"]);
@@ -27,21 +27,40 @@ function onLoadDataFromServer(data) {
         });
         table.append(dataRowObject);
     });
-    $(".editable").click(beginEditing);
+    $(".editable").one('click', beginEditing);
 }
 
+var editBox;
+var storedValue;
+
 function beginEditing() {
-    $(this).editable(function (value) {
-        var putValue = {
-            id: $(this).data("id")
-        };
-        putValue[$(this).data("column")] = value;
+    if (editBox) stopEditing(false);
+    editBox = $(this);
+    storedValue = this.innerHTML;
+    this.innerHTML = "<input type='text' onblur='stopEditing(false);'>";
+    this.firstChild.value = _.unescape(storedValue);
+    editBox.on('keyup', function (e) {
+        if (e.keyCode === 13) {
+            stopEditing(true);
+        }
+    });
+}
+
+function stopEditing(confirmed) {
+    if (confirmed) {
+        var newValue = editBox[0].firstChild.value;
+        editBox.html(_.escape(newValue));
+        var dataBlock = "id=" + editBox.data("id")
+            + ","
+            + editBox.data("column") + "=" + newValue;
 
         $.ajax({
             url: '/data',
             type: 'PUT',
-            data: putValue
+            data: dataBlock
         });
-        return value;
-    });
+    } else {
+        editBox.html(storedValue);
+    }
+    editBox.one('click', beginEditing);
 }

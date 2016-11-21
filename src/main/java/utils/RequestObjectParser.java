@@ -2,9 +2,11 @@ package utils;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class RequestObjectParser {
     private final Map<String, String> flatParameterMap;
@@ -101,4 +103,14 @@ public class RequestObjectParser {
                 .collect(Collectors.toMap(Map.Entry::getKey,
                         entry -> String.join(",", (CharSequence[]) entry.getValue())));
     }
+
+    public RequestObjectParser(String putLine) {
+        flatParameterMap = new HashMap<>();
+        Stream.of(putLine.split(",", 2))
+                .map(s ->  s.split("=", 2))
+                .forEach(s -> flatParameterMap.put(s[0], s[1]));
+    }
+
+
+
 }

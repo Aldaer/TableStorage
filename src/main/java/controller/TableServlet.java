@@ -43,8 +43,15 @@ public class TableServlet extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("Performing PUT");
-        final RequestObjectParser parser = new RequestObjectParser(req.getParameterMap());
+        String putLine;
+        try {
+            putLine = req.getReader().readLine();    // There's no parameter map in PUT requests
+        } catch (IOException e) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Problem parsing PUT request");
+            return;
+        }
 
+        final RequestObjectParser parser = new RequestObjectParser(putLine);
         SampleRecord updatedRecord = parser.reconstructFromPrototype(SampleRecord.class, recordDao::getDetachedReference);
 
         if (updatedRecord == null) {
