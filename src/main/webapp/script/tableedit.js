@@ -31,20 +31,16 @@ function onLoadDataFromServer(data) {
 }
 
 function beginEditing() {
-    $(this).editable(function (value, settings) {
+    $(this).editable(function (value) {
         var putValue = {
             id: $(this).data("id")
         };
         putValue[$(this).data("column")] = value;
 
-        alert("Put request: " + JSON.stringify(putValue));
         $.ajax({
             url: '/data',
             type: 'PUT',
-            data: {
-                id: 10,
-                NAME: "xxx"
-            }
+            data: putValue
         });
         return value;
     });

@@ -73,13 +73,13 @@ public class TestObjectStorage {
     @Test
     public void testUpdateObjectInDatabaseByReconstruction() {
         final MockHttpServletRequest req = new MockHttpServletRequest();
-        final RequestObjectParser parser = new RequestObjectParser(req);
 
         Long storedId = rec.getId();
 
         req.setParameter("id", storedId.toString());
         req.setParameter("NAME", "reconstructed");
 
+        final RequestObjectParser parser = new RequestObjectParser(req.getParameterMap());
         final SampleRecord newRecord = parser.reconstructFromPrototype(SampleRecord.class, recordDao::getDetachedReference);
 
         assertThat(newRecord.getName(), is("reconstructed"));

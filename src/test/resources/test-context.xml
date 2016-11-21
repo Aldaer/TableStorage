@@ -20,8 +20,8 @@
 
     <bean class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
           p:dataSource-ref="dataSource"
-          p:persistenceUnitName="RecordPersistence"
-          p:persistenceProviderClass="org.hibernate.ejb.HibernatePersistence"/>
+          p:persistenceUnitName="TestPersistence"
+          p:persistenceProviderClass="org.hibernate.jpa.HibernatePersistenceProvider"/>
 
     <bean id="testServlet" class="controller.TableServlet"/>
 

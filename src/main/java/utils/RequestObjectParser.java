@@ -1,15 +1,13 @@
 package utils;
 
-import lombok.RequiredArgsConstructor;
-
-import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
 public class RequestObjectParser {
-    private final HttpServletRequest req;
+    private final Map<String, String> flatParameterMap;
 
     /**
      * Reconstructs object from request into supplied blank, returning reference to it.
@@ -25,7 +23,7 @@ public class RequestObjectParser {
     private <T> void reconstructField(T blank, Field field) {
         String fieldName = JsonPacker.getFieldName(field);
 
-        final String fieldValue = req.getParameter(fieldName);
+        final String fieldValue = flatParameterMap.get(fieldName);
         if (fieldValue != null) {
             Object fieldValueAsObject = convertValueIntoObject(fieldValue, field.getType());
             setObjectFieldValue(blank, field, fieldValueAsObject);
@@ -58,7 +56,7 @@ public class RequestObjectParser {
 
         final String pKeyName = JsonPacker.getFieldName(pKeyField);
 
-        return convertValueIntoObject(req.getParameter(pKeyName), pKeyField.getType());
+        return convertValueIntoObject(flatParameterMap.get(pKeyName), pKeyField.getType());
     }
 
     private static boolean isPrimaryKeyField(Field f) {
@@ -92,5 +90,15 @@ public class RequestObjectParser {
         } catch (IllegalAccessException e) {
             throw new RuntimeException("Cannot set field value", e);
         }
+    }
+
+    public RequestObjectParser(Map<String, String[]> parameterMap) {
+        flatParameterMap = flattenMap(parameterMap);
+    }
+
+    static Map<String, String> flattenMap(Map<String, String[]> parameterMap) {
+        return parameterMap.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        entry -> String.join(",", (CharSequence[]) entry.getValue())));
     }
 }
