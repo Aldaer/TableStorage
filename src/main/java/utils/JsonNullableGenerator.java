@@ -15,6 +15,12 @@ import java.nio.charset.StandardCharsets;
 public class JsonNullableGenerator implements JsonGenerator {
     private final JsonGenerator jg;
 
+    @Override
+    public JsonGenerator writeKey(String name) {
+        jg.writeKey(name);
+        return this;
+    }
+
     public JsonNullableGenerator(JsonGeneratorFactory factory, OutputStream out) {
         jg = factory.createGenerator(out, StandardCharsets.UTF_8);
     }
