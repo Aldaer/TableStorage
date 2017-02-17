@@ -1,175 +1,385 @@
 package utils;
 
-import javax.json.JsonValue;
-import javax.json.stream.JsonGenerator;
-import javax.json.stream.JsonGeneratorFactory;
+import com.fasterxml.jackson.core.*;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 
 /**
- * Wrapper for JsonGenerator by glassfish. Instead of generating exception
- * on null objects when writing JSON, just skips them.
+ * Wrapper for JsonGenerator from Jackson. Instead of generating exception
+ * on null objects when writing JSON, just skips them. Turns checked exceptions to unchecked
  */
-public class JsonNullableGenerator implements JsonGenerator {
+public class JsonNullableGenerator extends JsonGenerator {
     private final JsonGenerator jg;
 
-    @Override
-    public JsonGenerator writeKey(String name) {
-        jg.writeKey(name);
-        return this;
-    }
-
-    public JsonNullableGenerator(JsonGeneratorFactory factory, OutputStream out) {
-        jg = factory.createGenerator(out, StandardCharsets.UTF_8);
-    }
-
-    @Override
-    public JsonGenerator writeStartObject() {
-        jg.writeStartObject();
-        return this;
+    public JsonNullableGenerator(JsonFactory factory, OutputStream out) {
+        try {
+            jg = factory.createGenerator(out, JsonEncoding.UTF8);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public JsonGenerator writeStartObject(String name) {
-        jg.writeStartObject(name);
+    public JsonNullableGenerator setCodec(ObjectCodec oc) {
+        jg.setCodec(oc);
         return this;
     }
 
     @Override
-    public JsonGenerator writeStartArray() {
-        jg.writeStartArray();
+    public ObjectCodec getCodec() {
+        return jg.getCodec();
+    }
+
+    @Override
+    public Version version() {
+        return jg.version();
+    }
+
+    @Override
+    public JsonNullableGenerator enable(Feature f) {
+        jg.enable(f);
         return this;
     }
 
     @Override
-    public JsonGenerator writeStartArray(String name) {
-        jg.writeStartArray(name);
+    public JsonNullableGenerator disable(Feature f) {
+        jg.disable(f);
         return this;
     }
 
     @Override
-    public JsonGenerator write(String name, JsonValue value) {
-        if (value != null) jg.write(name, value);
+    public boolean isEnabled(Feature f) {
+        return false;
+    }
+
+    @Override
+    public int getFeatureMask() {
+        return 0;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    @Deprecated
+    public JsonNullableGenerator setFeatureMask(int values) {
+        jg.setFeatureMask(values);
         return this;
     }
 
     @Override
-    public JsonGenerator write(String name, String value) {
-        if (value != null) jg.write(name, value);
+    public JsonNullableGenerator useDefaultPrettyPrinter() {
+        jg.useDefaultPrettyPrinter();
         return this;
     }
 
     @Override
-    public JsonGenerator write(String name, BigInteger value) {
-        if (value != null) jg.write(name, value);
-        return this;
+    public void writeStartArray() {
+        try {
+            jg.writeStartArray();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public JsonGenerator write(String name, BigDecimal value) {
-        if (value != null) jg.write(name, value);
-        return this;
+    public void writeEndArray() {
+        try {
+            jg.writeEndArray();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public JsonGenerator write(String name, int value) {
-        jg.write(name, value);
-        return this;
+    public void writeStartObject() {
+        try {
+            jg.writeStartObject();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public JsonGenerator write(String name, long value) {
-        jg.write(name, value);
-        return this;
+    public void writeEndObject() {
+        try {
+            jg.writeEndObject();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public JsonGenerator write(String name, double value) {
-        jg.write(name, value);
-        return this;
+    public void writeFieldName(String name) {
+        try {
+            jg.writeFieldName(name);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public JsonGenerator write(String name, boolean value) {
-        jg.write(name, value);
-        return this;
+    public void writeFieldName(SerializableString name) {
+        try {
+            jg.writeFieldName(name);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public JsonGenerator writeNull(String name) {
-        jg.writeNull(name);
-        return this;
+    public void writeString(String text) {
+        try {
+            jg.writeString(text);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public JsonGenerator writeEnd() {
-        jg.writeEnd();
-        return this;
+    public void writeString(char[] text, int offset, int len) {
+        try {
+            jg.writeString(text, offset, len);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public JsonGenerator write(JsonValue value) {
-        if (value != null) jg.write(value);
-        return this;
+    public void writeString(SerializableString text) {
+        try {
+            jg.writeString(text);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public JsonGenerator write(String value) {
-        if (value != null) jg.write(value);
-        return this;
+    public void writeRawUTF8String(byte[] text, int offset, int length) {
+        try {
+            jg.writeRawUTF8String(text, offset, length);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public JsonGenerator write(BigDecimal value) {
-        if (value != null) jg.write(value);
-        return this;
+    public void writeUTF8String(byte[] text, int offset, int length) {
+        try {
+            jg.writeUTF8String(text, offset, length);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public JsonGenerator write(BigInteger value) {
-        if (value != null) jg.write(value);
-        return this;
+    public void writeRaw(String text) {
+        try {
+            jg.writeRaw(text);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public JsonGenerator write(int value) {
-        jg.write(value);
-        return this;
+    public void writeRaw(String text, int offset, int len) {
+        try {
+            jg.writeRaw(text, offset, len);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public JsonGenerator write(long value) {
-        jg.write(value);
-        return this;
+    public void writeRaw(char[] text, int offset, int len) {
+        try {
+            jg.writeRaw(text, offset, len);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public JsonGenerator write(double value) {
-        jg.write(value);
-        return this;
+    public void writeRaw(char c) {
+        try {
+            jg.writeRaw(c);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public JsonGenerator write(boolean value) {
-        jg.write(value);
-        return this;
+    public void writeRawValue(String text) {
+        try {
+            jg.writeRawValue(text);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public JsonGenerator writeNull() {
-        jg.writeNull();
-        return this;
+    public void writeRawValue(String text, int offset, int len) {
+        try {
+            jg.writeRawValue(text, offset, len);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public void close() {
-        jg.close();
+    public void writeRawValue(char[] text, int offset, int len) {
+        try {
+            jg.writeRawValue(text, offset, len);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void writeBinary(Base64Variant bv, byte[] data, int offset, int len) {
+        try {
+            jg.writeBinary(bv, data, offset, len);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public int writeBinary(Base64Variant bv, InputStream data, int dataLength) {
+        try {
+            jg.writeBinary(bv, data, dataLength);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return 0;
+    }
+
+    @Override
+    public void writeNumber(int v) {
+        try {
+            jg.writeNumber(v);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void writeNumber(long v) {
+        try {
+            jg.writeNumber(v);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void writeNumber(BigInteger v) {
+        try {
+            jg.writeNumber(v);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void writeNumber(double v) {
+        try {
+            jg.writeNumber(v);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void writeNumber(float v) {
+        try {
+            jg.writeNumber(v);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void writeNumber(BigDecimal v) {
+        try {
+            jg.writeNumber(v);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void writeNumber(String encodedValue) {
+        try {
+            jg.writeNumber(encodedValue);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void writeBoolean(boolean state) {
+        try {
+            jg.writeBoolean(state);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void writeNull() {
+        try {
+            jg.writeNull();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void writeObject(Object pojo) {
+        try {
+            jg.writeObject(pojo);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void writeTree(TreeNode rootNode) {
+        try {
+            jg.writeTree(rootNode);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public JsonStreamContext getOutputContext() {
+        return jg.getOutputContext();
     }
 
     @Override
     public void flush() {
-        jg.flush();
+        try {
+            jg.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public boolean isClosed() {
+        return false;
+    }
+
+    @Override
+    public void close() {
+        try {
+            jg.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

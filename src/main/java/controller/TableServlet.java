@@ -1,5 +1,6 @@
 package controller;
 
+import com.fasterxml.jackson.core.JsonFactory;
 import dao.JpaDao;
 import model.SampleRecord;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,6 @@ import utils.JsonNullableGenerator;
 import utils.JsonPacker;
 import utils.RequestObjectParser;
 
-import javax.json.stream.JsonGeneratorFactory;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,7 +27,7 @@ public class TableServlet extends HttpServlet {
     private JpaDao<SampleRecord> recordDao;
 
     @Autowired
-    private JsonGeneratorFactory JF;
+    private JsonFactory JF;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
