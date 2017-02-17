@@ -1,28 +1,27 @@
 package utils;
 
+import com.fasterxml.jackson.core.JsonFactory;
 import model.SampleRecord;
 import org.junit.Test;
 
-import javax.json.Json;
-import javax.json.stream.JsonGenerator;
-import javax.json.stream.JsonGeneratorFactory;
 import java.io.ByteArrayOutputStream;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class TestJsonGeneratorAndPacker {
-    private static JsonGeneratorFactory JF = Json.createGeneratorFactory(null);
+    private static JsonFactory JF = new JsonFactory();
 
     private final ByteArrayOutputStream out = new ByteArrayOutputStream();
-    private final JsonGenerator gen = new JsonNullableGenerator(JF, out);
+    private final JsonNullableGenerator gen = new JsonNullableGenerator(JF, out);
     private final JsonPacker jPacker = new JsonPacker(gen);
 
     @Test
     public void testJsonGeneratorWithInt() throws Exception {
         gen.writeStartObject();
-        gen.write("INT", 1);
-        gen.writeEnd();
+        gen.writeFieldName("INT");
+        gen.writeNumber(1);
+        gen.writeEndObject();
         gen.flush();
 
         final String expectedResult = "{\"INT\":1}";

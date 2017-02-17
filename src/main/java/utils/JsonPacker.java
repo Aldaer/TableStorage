@@ -2,7 +2,6 @@ package utils;
 
 import lombok.RequiredArgsConstructor;
 
-import javax.json.stream.JsonGenerator;
 import javax.persistence.Column;
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -17,18 +16,18 @@ import java.util.Arrays;
  */
 @RequiredArgsConstructor
 public class JsonPacker {
-    private final JsonGenerator generator;
+    private final JsonNullableGenerator generator;
 
     public void packIntoJson(JsonPackable object) {
         generator.writeStartObject();
         packObjectBody(object);
-        generator.writeEnd();
+        generator.writeEndObject();
     }
 
     public void packIntoJson(JsonPackable[] objects) {
         generator.writeStartArray();
         Arrays.stream(objects).forEachOrdered(this::packIntoJson);
-        generator.writeEnd();
+        generator.writeEndArray();
     }
 
     public void flushGenerator() {
@@ -49,11 +48,13 @@ public class JsonPacker {
             }
 
             if (JsonPackable.class.isAssignableFrom(fieldValue.getClass())) {
-                generator.writeStartObject(fieldName);
+                generator.writeFieldName(fieldName);
+                generator.writeStartObject();
                 packObjectBody(fieldValue);
-                generator.writeEnd();
+                generator.writeEndObject();
             } else {
-                generator.write(fieldName, fieldValue.toString());
+                generator.writeFieldName(fieldName);
+                generator.writeString(fieldValue.toString());
             }
         }
     }

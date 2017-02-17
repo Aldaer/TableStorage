@@ -25,7 +25,5 @@
 
     <bean id="testServlet" class="controller.TableServlet"/>
 
-    <bean id="jf" class="javax.json.Json" factory-method="createGeneratorFactory">
-        <constructor-arg><null/></constructor-arg>
-    </bean>
+    <bean id="jf" class="com.fasterxml.jackson.core.JsonFactory"/>
 </beans>
