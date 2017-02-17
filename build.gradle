@@ -11,7 +11,8 @@ repositories {
 dependencies {
     testCompile 'junit:junit:+'
     testCompile 'org.springframework:spring-test:+'
-    testCompile 'com.h2database:h2:+'
+//    testCompile 'com.h2database:h2:+'
+    compile 'com.h2database:h2:+'
 
     compileOnly 'org.projectlombok:lombok:+'
 
@@ -26,4 +27,6 @@ dependencies {
 
     compile 'javax.servlet:javax.servlet-api:+'
     compile 'javax.json:javax.json-api:+'
+
+    compile 'org.glassfish:javax.json:+'
 }
