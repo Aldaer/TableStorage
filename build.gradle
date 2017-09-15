@@ -13,6 +13,8 @@ dependencies {
     testCompile 'org.springframework:spring-test:+'
     testCompile 'com.h2database:h2:+'
 
+    testCompile 'com.fasterxml.jackson.core:jackson-databind:+'
+
     compileOnly 'org.projectlombok:lombok:+'
 
     compile 'org.springframework:spring-core:+'
