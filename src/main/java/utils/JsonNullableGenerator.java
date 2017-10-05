@@ -20,139 +20,139 @@ public class JsonNullableGenerator implements JsonGenerator {
     }
 
     @Override
-    public JsonGenerator writeStartObject() {
+    public JsonNullableGenerator writeStartObject() {
         jg.writeStartObject();
         return this;
     }
 
     @Override
-    public JsonGenerator writeStartObject(String name) {
+    public JsonNullableGenerator writeStartObject(String name) {
         jg.writeStartObject(name);
         return this;
     }
 
     @Override
-    public JsonGenerator writeStartArray() {
+    public JsonNullableGenerator writeStartArray() {
         jg.writeStartArray();
         return this;
     }
 
     @Override
-    public JsonGenerator writeStartArray(String name) {
+    public JsonNullableGenerator writeStartArray(String name) {
         jg.writeStartArray(name);
         return this;
     }
 
     @Override
-    public JsonGenerator write(String name, JsonValue value) {
+    public JsonNullableGenerator write(String name, JsonValue value) {
         if (value != null) jg.write(name, value);
         return this;
     }
 
     @Override
-    public JsonGenerator write(String name, String value) {
+    public JsonNullableGenerator write(String name, String value) {
         if (value != null) jg.write(name, value);
         return this;
     }
 
     @Override
-    public JsonGenerator write(String name, BigInteger value) {
+    public JsonNullableGenerator write(String name, BigInteger value) {
         if (value != null) jg.write(name, value);
         return this;
     }
 
     @Override
-    public JsonGenerator write(String name, BigDecimal value) {
+    public JsonNullableGenerator write(String name, BigDecimal value) {
         if (value != null) jg.write(name, value);
         return this;
     }
 
     @Override
-    public JsonGenerator write(String name, int value) {
+    public JsonNullableGenerator write(String name, int value) {
         jg.write(name, value);
         return this;
     }
 
     @Override
-    public JsonGenerator write(String name, long value) {
+    public JsonNullableGenerator write(String name, long value) {
         jg.write(name, value);
         return this;
     }
 
     @Override
-    public JsonGenerator write(String name, double value) {
+    public JsonNullableGenerator write(String name, double value) {
         jg.write(name, value);
         return this;
     }
 
     @Override
-    public JsonGenerator write(String name, boolean value) {
+    public JsonNullableGenerator write(String name, boolean value) {
         jg.write(name, value);
         return this;
     }
 
     @Override
-    public JsonGenerator writeNull(String name) {
+    public JsonNullableGenerator writeNull(String name) {
         jg.writeNull(name);
         return this;
     }
 
     @Override
-    public JsonGenerator writeEnd() {
+    public JsonNullableGenerator writeEnd() {
         jg.writeEnd();
         return this;
     }
 
     @Override
-    public JsonGenerator write(JsonValue value) {
+    public JsonNullableGenerator write(JsonValue value) {
         if (value != null) jg.write(value);
         return this;
     }
 
     @Override
-    public JsonGenerator write(String value) {
+    public JsonNullableGenerator write(String value) {
         if (value != null) jg.write(value);
         return this;
     }
 
     @Override
-    public JsonGenerator write(BigDecimal value) {
+    public JsonNullableGenerator write(BigDecimal value) {
         if (value != null) jg.write(value);
         return this;
     }
 
     @Override
-    public JsonGenerator write(BigInteger value) {
+    public JsonNullableGenerator write(BigInteger value) {
         if (value != null) jg.write(value);
         return this;
     }
 
     @Override
-    public JsonGenerator write(int value) {
+    public JsonNullableGenerator write(int value) {
         jg.write(value);
         return this;
     }
 
     @Override
-    public JsonGenerator write(long value) {
+    public JsonNullableGenerator write(long value) {
         jg.write(value);
         return this;
     }
 
     @Override
-    public JsonGenerator write(double value) {
+    public JsonNullableGenerator write(double value) {
         jg.write(value);
         return this;
     }
 
     @Override
-    public JsonGenerator write(boolean value) {
+    public JsonNullableGenerator write(boolean value) {
         jg.write(value);
         return this;
     }
 
     @Override
-    public JsonGenerator writeNull() {
+    public JsonNullableGenerator writeNull() {
         jg.writeNull();
         return this;
     }
@@ -165,5 +165,11 @@ public class JsonNullableGenerator implements JsonGenerator {
     @Override
     public void flush() {
         jg.flush();
+    }
+
+    @Override
+    public JsonNullableGenerator writeKey(String name) {
+        jg.writeKey(name);
+        return this;
     }
 }
